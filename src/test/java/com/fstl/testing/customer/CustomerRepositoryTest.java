@@ -23,10 +23,34 @@ class CustomerRepositoryTest {
     private CustomerRepository underTest;
 
     @Test
-    void itShouldName() {
-        //Given
-        //When
-        //Then
+    void itShouldSelectCustomerByPhoneNumber() {
+        // Given
+        UUID id = UUID.randomUUID();
+        String phoneNumber = "0000";
+        Customer customer = new Customer(id, "Abel", phoneNumber);
+
+        // When
+        underTest.save(customer);
+
+        // Then
+        Optional<Customer> optionalCustomer = underTest.selectCustomerByPhoneNumber(phoneNumber);
+        assertThat(optionalCustomer)
+                .isPresent()
+                .hasValueSatisfying(c -> {
+                    assertThat(c).isEqualToComparingFieldByField(customer);
+                });
+    }
+
+    @Test
+    void itNotShouldSelectCustomerByPhoneNumberWhenNumberDoesNotExists() {
+        // Given
+        String phoneNumber = "0000";
+
+        // When
+        Optional<Customer> optionalCustomer = underTest.selectCustomerByPhoneNumber(phoneNumber);
+
+        // Then
+        assertThat(optionalCustomer).isNotPresent();
     }
 
     @Test
