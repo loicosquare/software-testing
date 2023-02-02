@@ -1,4 +1,4 @@
-package com.amigoscode.testing;
+package com.fstl.testing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

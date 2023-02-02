@@ -1,9 +1,10 @@
-package com.amigoscode.testing.customer;
+package com.fstl.testing.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CustomerRegistrationService {
@@ -15,7 +16,7 @@ public class CustomerRegistrationService {
         this.customerRepository = customerRepository;
     }
 
-    public void RegisterNewCustomer(CustomerRegistrationRequest request) {
+    public void registerNewCustomer(CustomerRegistrationRequest request) {
         // 1. Phone number is taken
         // 2 . if taken lets check if belongs to same customer
         // - 2.1 if yes return
@@ -32,6 +33,10 @@ public class CustomerRegistrationService {
                 return;
             }
             throw new IllegalStateException(String.format("phone number [%s] is taken", phoneNumber));
+        }
+
+        if(request.getCustomer().getId() == null){
+            request.getCustomer().setId(UUID.randomUUID());
         }
         customerRepository.save(request.getCustomer());
     }

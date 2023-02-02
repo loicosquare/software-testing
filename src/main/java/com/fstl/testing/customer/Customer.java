@@ -1,4 +1,4 @@
-package com.amigoscode.testing.customer;
+package com.fstl.testing.customer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 @Entity
+@JsonIgnoreProperties(value = {"id"}, allowGetters = true)
 public class Customer {
 
     @Id

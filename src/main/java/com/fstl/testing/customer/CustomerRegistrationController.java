@@ -1,4 +1,4 @@
-package com.amigoscode.testing.customer;
+package com.fstl.testing.customer;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

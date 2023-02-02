@@ -1,4 +1,4 @@
-package com.amigoscode.testing.customer;
+package com.fstl.testing.customer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
