@@ -1,10 +1,12 @@
 package com.fstl.testing.payment;
 
+import java.math.BigDecimal;
+
 public interface CardPaymentCharger {
 
     CardPaymentCharge chargeCard(
             String source,
-            String amount,
+            BigDecimal amount,
             Currency currency,
             String description
     );

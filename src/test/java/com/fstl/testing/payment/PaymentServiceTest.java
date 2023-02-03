@@ -61,7 +61,7 @@ class PaymentServiceTest {
         //... Card is charged successfully
         given(cardPaymentCharger.chargeCard(
                 paymentRequest.getPayment().getSource(),
-                String.valueOf(paymentRequest.getPayment().getAmount()),
+                paymentRequest.getPayment().getAmount(),
                 paymentRequest.getPayment().getCurrency(),
                 paymentRequest.getPayment().getDescription()
         )).willReturn(new CardPaymentCharge(true));
@@ -105,7 +105,7 @@ class PaymentServiceTest {
         // ... Card is not charged successfully
         given(cardPaymentCharger.chargeCard(
                 paymentRequest.getPayment().getSource(),
-                String.valueOf(paymentRequest.getPayment().getAmount()),
+                paymentRequest.getPayment().getAmount(),
                 paymentRequest.getPayment().getCurrency(),
                 paymentRequest.getPayment().getDescription()
         )).willReturn(new CardPaymentCharge(false));

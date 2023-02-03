@@ -45,7 +45,7 @@ public class PaymentService {
         // 3. Charge card
         CardPaymentCharge cardPaymentCharge = cardPaymentCharger.chargeCard(
                 paymentRequest.getPayment().getSource(),
-                String.valueOf(paymentRequest.getPayment().getAmount()),
+                paymentRequest.getPayment().getAmount(),
                 paymentRequest.getPayment().getCurrency(),
                 paymentRequest.getPayment().getDescription()
         );

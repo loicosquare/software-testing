@@ -96,7 +96,7 @@ class PaymentServiceDiffBlueTest {
         payment.setPaymentId(123L);
         payment.setSource("Source");
         when(paymentRepository.save((Payment) any())).thenReturn(payment);
-        when(cardPaymentCharger.chargeCard((String) any(), (String) any(), (Currency) any(), (String) any()))
+        when(cardPaymentCharger.chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any()))
                 .thenReturn(new CardPaymentCharge(true));
         UUID randomUUIDResult = UUID.randomUUID();
 
@@ -106,7 +106,7 @@ class PaymentServiceDiffBlueTest {
         paymentService.chargeCard(randomUUIDResult, paymentRequest);
         verify(customerRepository).findById((UUID) any());
         verify(paymentRepository).save((Payment) any());
-        verify(cardPaymentCharger).chargeCard((String) any(), (String) any(), (Currency) any(), (String) any());
+        verify(cardPaymentCharger).chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any());
         assertSame(randomUUIDResult, paymentRequest.getPayment().getCustomerId());
     }
 
@@ -122,7 +122,7 @@ class PaymentServiceDiffBlueTest {
         Optional<Customer> ofResult = Optional.of(customer);
         when(customerRepository.findById((UUID) any())).thenReturn(ofResult);
         when(paymentRepository.save((Payment) any())).thenThrow(new IllegalStateException());
-        when(cardPaymentCharger.chargeCard((String) any(), (String) any(), (Currency) any(), (String) any()))
+        when(cardPaymentCharger.chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any()))
                 .thenReturn(new CardPaymentCharge(true));
         UUID customerId = UUID.randomUUID();
 
@@ -132,7 +132,7 @@ class PaymentServiceDiffBlueTest {
                 () -> paymentService.chargeCard(customerId, new PaymentRequest(payment)));
         verify(customerRepository).findById((UUID) any());
         verify(paymentRepository).save((Payment) any());
-        verify(cardPaymentCharger).chargeCard((String) any(), (String) any(), (Currency) any(), (String) any());
+        verify(cardPaymentCharger).chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any());
     }
 
     /**
@@ -155,7 +155,7 @@ class PaymentServiceDiffBlueTest {
         payment.setPaymentId(123L);
         payment.setSource("Source");
         when(paymentRepository.save((Payment) any())).thenReturn(payment);
-        when(cardPaymentCharger.chargeCard((String) any(), (String) any(), (Currency) any(), (String) any()))
+        when(cardPaymentCharger.chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any()))
                 .thenReturn(new CardPaymentCharge(false));
         UUID customerId = UUID.randomUUID();
 
@@ -164,7 +164,7 @@ class PaymentServiceDiffBlueTest {
         assertThrows(IllegalStateException.class,
                 () -> paymentService.chargeCard(customerId, new PaymentRequest(payment1)));
         verify(customerRepository).findById((UUID) any());
-        verify(cardPaymentCharger).chargeCard((String) any(), (String) any(), (Currency) any(), (String) any());
+        verify(cardPaymentCharger).chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any());
     }
 
     /**
@@ -196,7 +196,7 @@ class PaymentServiceDiffBlueTest {
         payment.setPaymentId(123L);
         payment.setSource("Source");
         when(paymentRepository.save((Payment) any())).thenReturn(payment);
-        when(cardPaymentCharger.chargeCard((String) any(), (String) any(), (Currency) any(), (String) any()))
+        when(cardPaymentCharger.chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any()))
                 .thenReturn(null);
         UUID customerId = UUID.randomUUID();
 
@@ -234,7 +234,7 @@ class PaymentServiceDiffBlueTest {
         payment.setPaymentId(123L);
         payment.setSource("Source");
         when(paymentRepository.save((Payment) any())).thenReturn(payment);
-        when(cardPaymentCharger.chargeCard((String) any(), (String) any(), (Currency) any(), (String) any()))
+        when(cardPaymentCharger.chargeCard((String) any(), (BigDecimal) any(), (Currency) any(), (String) any()))
                 .thenReturn(new CardPaymentCharge(true));
         paymentService.chargeCard(UUID.randomUUID(), null);
     }

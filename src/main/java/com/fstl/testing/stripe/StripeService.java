@@ -8,6 +8,7 @@ import com.stripe.model.Charge;
 import com.stripe.net.RequestOptions;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class StripeService implements CardPaymentCharger {
     }
 
     @Override
-    public CardPaymentCharge chargeCard(String cardSource, String amount, Currency currency, String description) {
+    public CardPaymentCharge chargeCard(String cardSource, BigDecimal amount, Currency currency, String description) {
         Map<String, Object> params = new HashMap<>();
         params.put("amount", 2000);
         params.put("currency", "currency");

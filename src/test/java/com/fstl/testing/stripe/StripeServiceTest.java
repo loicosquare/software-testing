@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.math.BigDecimal;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,7 +42,7 @@ class StripeServiceTest {
         // Given
         String cardSource = "0x0x0x";
 
-        String amount = "10.00";
+        BigDecimal amount = new BigDecimal("10.00");
         Currency currency = Currency.USD;
         String description = "Zakat";
 
@@ -83,7 +85,7 @@ class StripeServiceTest {
     void itShouldNotChargeWhenApiThrowsException() throws StripeException {
         // Given
         String cardSource = "0x0x0x";
-        String amount = "10.00";
+        BigDecimal amount = new BigDecimal("10.00");
         Currency currency = Currency.USD;
         String description = "Zakat";
 
