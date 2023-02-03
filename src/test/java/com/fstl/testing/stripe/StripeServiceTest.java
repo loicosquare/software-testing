@@ -42,7 +42,7 @@ class StripeServiceTest {
         // Given
         String cardSource = "0x0x0x";
 
-        BigDecimal amount = new BigDecimal("10.00");
+        BigDecimal amount = new BigDecimal("2000");
         Currency currency = Currency.USD;
         String description = "Zakat";
 
@@ -85,7 +85,7 @@ class StripeServiceTest {
     void itShouldNotChargeWhenApiThrowsException() throws StripeException {
         // Given
         String cardSource = "0x0x0x";
-        BigDecimal amount = new BigDecimal("10.00");
+        BigDecimal amount = new BigDecimal("2000");
         Currency currency = Currency.USD;
         String description = "Zakat";
 

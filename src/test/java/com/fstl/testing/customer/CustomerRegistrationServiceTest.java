@@ -1,5 +1,6 @@
 package com.fstl.testing.customer;
 
+import com.fstl.testing.utils.PhoneNumberValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -27,6 +28,10 @@ class CustomerRegistrationServiceTest {
      */
     @Mock
     private CustomerRepository customerRepository; /*= mock(CustomerRepository.class);*/
+
+    @Mock
+    PhoneNumberValidator phoneNumberValidator; //We mock because w've already tested it.
+
     private CustomerRegistrationService underTest;
 
     @Captor
@@ -38,7 +43,7 @@ class CustomerRegistrationServiceTest {
         MockitoAnnotations.initMocks(this);
 
         //Before each test i'm going to have a fresh instance of CustomerRegistration.
-        underTest = new CustomerRegistrationService(customerRepository);
+        underTest = new CustomerRegistrationService(customerRepository, phoneNumberValidator);
     }
 
     @Test
@@ -50,8 +55,11 @@ class CustomerRegistrationServiceTest {
         //... A request taken by the function
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(customer);
 
-        //No customer with phoneNumber passed
+        //... No customer with phoneNumber passed
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber)).willReturn(Optional.empty());
+
+        //... Valid phone number
+        given(phoneNumberValidator.test(phoneNumber)).willReturn(true);
 
         //When
         underTest.registerNewCustomer(request);
@@ -74,6 +82,9 @@ class CustomerRegistrationServiceTest {
         // ... No customer with phone number passed
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.empty());
+
+        //... Valid phone number
+        given(phoneNumberValidator.test(phoneNumber)).willReturn(true);
 
         // When
         underTest.registerNewCustomer(request);
@@ -99,6 +110,9 @@ class CustomerRegistrationServiceTest {
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.of(customer));
 
+        //... Valid phone number
+        given(phoneNumberValidator.test(phoneNumber)).willReturn(true);
+
         // When
         underTest.registerNewCustomer(request);
 
@@ -122,6 +136,9 @@ class CustomerRegistrationServiceTest {
         given(customerRepository.selectCustomerByPhoneNumber(phoneNumber))
                 .willReturn(Optional.of(customerTwo));
 
+        //... Valid phone number
+        given(phoneNumberValidator.test(phoneNumber)).willReturn(true);
+
         // When
         // Then
         assertThatThrownBy(() -> underTest.registerNewCustomer(request))
@@ -131,5 +148,30 @@ class CustomerRegistrationServiceTest {
         // Finally
         then(customerRepository).should(never()).save(any(Customer.class));
 
+    }
+
+    @Test
+    void itShouldNotSaveCustomerWhenPhoneNumberIsInvalid() {
+        //Given customer and phoneNumber
+        String phoneNumber = "00099";
+        Customer customer = new Customer(UUID.randomUUID(), "Loic", phoneNumber);
+
+        //... A request taken by the function
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(customer);
+
+        //... No customer with phoneNumber passed
+        //given(customerRepository.selectCustomerByPhoneNumber(phoneNumber)).willReturn(Optional.empty());
+        //I comment because w'll no be interaction, this to make the test be faster
+
+        //... Valid phone number
+        given(phoneNumberValidator.test(phoneNumber)).willReturn(false);
+
+        //When
+        assertThatThrownBy(() -> underTest.registerNewCustomer(request))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining(String.format("phone number [%s] is not valid", phoneNumber));
+
+        //Then
+        then(customerRepository).shouldHaveNoMoreInteractions();
     }
 }

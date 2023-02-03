@@ -32,8 +32,8 @@ public class StripeService implements CardPaymentCharger {
     @Override
     public CardPaymentCharge chargeCard(String cardSource, BigDecimal amount, Currency currency, String description) {
         Map<String, Object> params = new HashMap<>();
-        params.put("amount", 2000);
-        params.put("currency", "currency");
+        params.put("amount", new BigDecimal("2000"));
+        params.put("currency", Currency.USD);
         params.put("source", cardSource);
         params.put("description",description);
 
