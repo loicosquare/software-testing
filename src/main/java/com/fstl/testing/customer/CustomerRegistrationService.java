@@ -25,6 +25,7 @@ public class CustomerRegistrationService {
 
         String phoneNumber = request.getCustomer().getPhoneNumber();
 
+        //TODO: Validate that phone number is valid
         Optional<Customer> optionalCustomer = customerRepository
                 .selectCustomerByPhoneNumber(phoneNumber);
         if(optionalCustomer.isPresent()){
